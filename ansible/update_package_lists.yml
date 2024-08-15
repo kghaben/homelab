@@ -1,0 +1,18 @@
+---
+- name: Update APT package lists
+  hosts: all
+  become: yes  # Ensure you have sudo privileges
+  tasks:
+    - name: Update APT package list
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600  # Update the cache if it's older than 3600 seconds (1 hour)
+
+    - name: Check if any upgrades are available
+      ansible.builtin.shell: apt list --upgradable
+      register: upgradable_packages
+      changed_when: false
+
+    - name: Display upgradable packages
+      ansible.builtin.debug:
+        msg: "{{ upgradable_packages.stdout_lines }}"

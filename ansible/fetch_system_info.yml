@@ -1,0 +1,20 @@
+---
+- name: Fetch System Information
+  hosts: all
+  become: yes  # Use sudo to execute commands
+  tasks:
+    - name: Gather system info
+      ansible.builtin.setup:  # This module gathers facts about the system
+
+    - name: Display all gathered system information
+      ansible.builtin.debug:  # This module prints info to the console
+        var: ansible_facts
+
+    - name: Display specific system information
+      ansible.builtin.debug:
+        msg: |
+          Hostname: {{ ansible_facts['hostname'] }}
+          OS: {{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_version'] }}
+          Kernel: {{ ansible_facts['kernel'] }}
+          Total RAM: {{ ansible_facts['memtotal_mb'] }} MB
+          CPU: {{ ansible_facts['processor'][0] }} ({{ ansible_facts['processor_cores'] }} cores)
