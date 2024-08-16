@@ -1,16 +1,12 @@
 ---
-- name: Update APT package lists
+- name: Run APT Update
   hosts: all
-  become: yes
+  become: yes  # Ensures that you have administrative privileges
   tasks:
-    - name: Remove APT lock files
-      ansible.builtin.shell: rm /var/lib/apt/lists/lock /var/cache/apt/archives/lock /var/lib/dpkg/lock*
-      ignore_errors: yes
-
-    - name: Update APT package list
+    - name: Update APT package lists
       ansible.builtin.apt:
         update_cache: yes
-        cache_valid_time: 3600
+        cache_valid_time: 3600  # Only update the cache if it is older than 3600 seconds (1 hour)
 
     - name: Check if any upgrades are available
       ansible.builtin.shell: apt list --upgradable
