@@ -1,0 +1,12 @@
+---
+- name: Retrieve Drive Space Information
+  hosts: all
+  become: yes  # Use sudo to get complete disk space info
+  tasks:
+    - name: Get disk space usage
+      ansible.builtin.shell: df -h
+      register: disk_space
+
+    - name: Display disk space usage
+      ansible.builtin.debug:
+        msg: "{{ disk_space.stdout_lines }}"
