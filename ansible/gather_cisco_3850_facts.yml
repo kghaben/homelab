@@ -1,0 +1,15 @@
+---
+- name: Gather information from Cisco Catalyst 3850 switches
+  hosts: cisco_3850_switches
+  gather_facts: no
+  connection: network_cli
+
+  tasks:
+    - name: Gather IOS facts
+      cisco.ios.ios_facts:
+        gather_subset: all
+      register: switch_facts
+
+    - name: Display gathered facts
+      debug:
+        var: switch_facts
