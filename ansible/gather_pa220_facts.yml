@@ -1,0 +1,15 @@
+---
+- name: Gather facts from Palo Alto PA-220 firewall
+  hosts: palo_alto_pa220
+  gather_facts: no
+  connection: local
+
+  tasks:
+    - name: Gather PAN-OS facts
+      paloaltonetworks.panos.panos_facts:
+        provider: "{{ provider }}"
+      register: pa_facts
+
+    - name: Display gathered facts
+      debug:
+        var: pa_facts
