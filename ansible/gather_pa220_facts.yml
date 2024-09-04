@@ -9,8 +9,6 @@
           hostname: "{{ ansible_host }}"
           username: "{{ ansible_user }}"
           password: "{{ ansible_password }}"
-          api_key: "{{ ansible_api_key | default(omit) }}"  # Optional: if you're using API key authentication
-          port: "{{ ansible_port | default(443) }}"  # Default to 443 if not specified
         delegate_to: localhost  # Run the task on localhost
       register: pa_facts
 
