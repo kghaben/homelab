@@ -1,6 +1,5 @@
 ---
-- name: Gather facts from Palo Alto PA-220 firewall
-  hosts: palo_alto_pa220
+- hosts: palo_alto_pa220
   gather_facts: no
   connection: local
 
