@@ -1,6 +1,3 @@
 ---
 collections:
   - name: paloaltonetworks.panos
-
-python_requirements:
-  - name: pan-python
