@@ -1,0 +1,18 @@
+---
+- hosts: palo_alto_pa220
+  gather_facts: no
+
+  tasks:
+    - name: Gather PAN-OS facts
+      paloaltonetworks.panos.panos_facts:
+        provider:
+          hostname: "{{ ansible_host }}"
+          username: "{{ ansible_user }}"
+          password: "{{ ansible_password }}"
+        gather_subset: ['config']
+        delegate_to: localhost  # Run the task on localhost
+      register: pa_facts
+
+    - name: Display gathered facts
+      debug:
+        var: pa_facts
