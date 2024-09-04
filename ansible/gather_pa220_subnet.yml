@@ -5,7 +5,7 @@
 
   vars:
     device:
-      ip_address: "{{ ip_address }}"
+      ip_address: "{{ ansible_ip_address }}"
       username: "{{ ansible_user }}"
       password: "{{ ansible_password }}"
 
