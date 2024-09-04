@@ -6,6 +6,7 @@
     - name: Gather PAN-OS facts
       paloaltonetworks.panos.panos_facts:
       register: pa_facts
+      delegate_to: localhost  # Run this task on the local machine
 
     - name: Display gathered facts
       debug:
