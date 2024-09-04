@@ -5,11 +5,14 @@
   tasks:
     - name: Gather PAN-OS facts
       paloaltonetworks.panos.panos_facts:
-        ip_address: "{{ ansible_host }}"  # Use the IP address from the inventory
-        username: "{{ ansible_user }}"  # Use the username from the inventory
-        password: "{{ ansible_password }}"  # Use the password from the inventory
+        provider:
+          hostname: "{{ ansible_host }}"
+          username: "{{ ansible_user }}"
+          password: "{{ ansible_password }}"
+          api_key: "{{ ansible_api_key | default(omit) }}"  # Optional: if you're using API key authentication
+          port: "{{ ansible_port | default(443) }}"  # Default to 443 if not specified
+        delegate_to: localhost  # Run the task on localhost
       register: pa_facts
-      delegate_to: localhost  # Run this task locally
 
     - name: Display gathered facts
       debug:
