@@ -1,0 +1,22 @@
+# playbook that will upgrade all packages on all hosts
+---
+- name: Upgrade Ubuntu System
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Upgrade all packages to the latest version
+      apt:
+        upgrade: dist
+
+    - name: Autoremove unnecessary packages
+      apt:
+        autoremove: yes
+
+    - name: Reboot the server if a kernel upgrade was performed
+      reboot:
+        when: "'linux-image' in ansible_facts.packages"

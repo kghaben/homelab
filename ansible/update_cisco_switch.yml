@@ -1,0 +1,48 @@
+---
+- name: Update Cisco 2950 Switch Firmware
+  hosts: switches
+  gather_facts: no
+  vars:
+    tftp_server: "{{ tftp_server }}"
+    firmware_file: "c2950.bin"
+    ansible_user: "{{ username }}"
+    ansible_password: "{{ password }}"
+    ansible_become: yes
+    ansible_become_method: enable
+    ansible_become_password: "{{ password }}"
+    ansible_network_os: ios
+    ansible_connection: network_cli
+
+  tasks:
+    - name: Copy firmware to the switch
+      ios_command:
+        commands:
+          - "copy tftp: flash:"
+        prompts:
+          - "Address or name of remote host.*?"
+          - "Source filename.*?"
+          - "Destination filename.*?"
+          - "Do you want to over write.*?"
+        responses:
+          - "{{ tftp_server }}"
+          - "{{ firmware_file }}"
+          - "{{ firmware_file }}"
+          - "yes"
+
+    - name: Set boot variable
+      ios_config:
+        lines:
+          - "boot system flash:{{ firmware_file }}"
+
+    - name: Save configuration
+      ios_config:
+        save_when: modified
+
+    - name: Reload the switch
+      ios_command:
+        commands:
+          - "reload"
+        prompts:
+          - "Proceed with reload.*?"
+        responses:
+          - ""
