@@ -1,17 +1,32 @@
 ---
-- hosts: palo_alto_pa220
-  gather_facts: no
+- name: Gather system info
+  hosts: "palo_alto_pa220"
+  connection: local
+
+  vars:
+    device:
+      ip_address: "{{ ansible_host }}"
+      username: "{{ ansible_user }}"
+      password: "{{ ansible_password }}"
+
+  collections:
+    - paloaltonetworks.panos
 
   tasks:
-    - name: Gather PAN-OS facts
+    - name: Gather facts for device
       paloaltonetworks.panos.panos_facts:
-        provider:
-          hostname: "{{ ansible_host }}"
-          username: "{{ ansible_user }}"
-          password: "{{ ansible_password }}"
-        delegate_to: localhost  # Run the task on localhost
-      register: pa_facts
+        provider: "{{ device }}"
 
-    - name: Display gathered facts
-      debug:
-        var: pa_facts
+    - name: Display information
+      ansible.builtin.debug:
+        msg:
+          - "Hostname: {{ ansible_facts['net_hostname'] }}"
+          - "Serial: {{ ansible_facts['net_serial'] }}"
+          - "Model: {{ ansible_facts['net_model'] }}"
+          - "Version: {{ ansible_facts['net_version'] }}"
+          - "Uptime: {{ ansible_facts['net_uptime'] }}"
+          - "HA Enabled: {{ ansible_facts['net_ha_enabled'] }}"
+          - "HA Type: {{ ansible_facts['net_ha_localmode'] }}"
+          - "HA Status: {{ ansible_facts['net_ha_localstate'] }}"
+          - "Multi-VSYS: {{ ansible_facts['net_multivsys'] }}"
+          - "{{ ansible_facts['net_session_usage'] }} out of {{ ansible_facts['net_session_max'] }} sessions in use"
